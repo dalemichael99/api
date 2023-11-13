@@ -10,6 +10,8 @@ class MyServer(BaseHTTPRequestHandler):
         self.send_header("Content-type", "application/json")
         self.end_headers()
         self.wfile.write(bytes("{\"version\": \"1\", \"participant_id\": \"\",\"data\":[{\"field1\":\"23\"},{\"field2\":\"3\"}]}", "utf-8"))
+        hello
+        
 
 if __name__ == "__main__":        
     webServer = HTTPServer((hostName, serverPort), MyServer)
