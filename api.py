@@ -1,4 +1,4 @@
-from flask import Flask, jsonify, request
+from flask import Flask, render_template, jsonify, request
 import random
 
 app = Flask(__name__)
@@ -19,17 +19,26 @@ locations = {
 def generate_fake_weather(location):
     latitude, longitude = locations.get(location, (0, 0))
     temperature = round(random.uniform(15, 30), 2)
-    description = 'Fake Weather Description'
+    humidity = round(random.uniform(40, 80), 2)
+    wind_speed = round(random.uniform(0, 10), 2)
+    description_options = ['Sunny', 'Cloudy', 'Rainy', 'Stormy']
+    description = random.choice(description_options)
 
     weather_data = {
         'location': location,
         'latitude': latitude,
         'longitude': longitude,
         'temperature': temperature,
+        'humidity': humidity,
+        'wind_speed': wind_speed,
         'description': description
     }
 
     return weather_data
+
+@app.route('/')
+def index():
+    return render_template('index.html', locations=locations.keys())
 
 @app.route('/api/weather', methods=['GET'])
 def get_weather():
@@ -37,7 +46,7 @@ def get_weather():
 
     if location:
         weather_data = generate_fake_weather(location)
-        return jsonify(weather_data)
+        return jsonify(weather_data), 200
     else:
         return jsonify({'error': 'Please provide a location parameter'}), 400
 

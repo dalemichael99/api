@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather App</title>
+</head>
+<body>
+
+<h1>Weather App</h1>
+
+{% for location in locations %}
+    <button onclick="getWeather('{{ location }}')">{{ location }}</button>
+{% endfor %}
+
+<p id="weatherOutput"></p>
+
+<script>
+    function getWeather(location) {
+        fetch(`/api/weather?location=${encodeURIComponent(location)}`)
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('weatherOutput').innerText = JSON.stringify(data, null, 2);
+            })
+            .catch(error => console.error('Error:', error));
+    }
+</script>
+
+</body>
+</html>
