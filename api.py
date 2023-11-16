@@ -1,7 +1,9 @@
 from flask import Flask, render_template, jsonify, request
+from flask_cors import CORS  # Import the CORS extension
 import random
 
 app = Flask(__name__)
+CORS(app)
 
 locations = {
     'Lake District National Park': (54.4609, -3.0886),
@@ -35,10 +37,6 @@ def generate_fake_weather(location):
     }
 
     return weather_data
-
-@app.route('/')
-def index():
-    return render_template('index.html', locations=locations.keys())
 
 @app.route('/api/weather', methods=['GET'])
 def get_weather():
